@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connect 4</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Connect 4</h1>
+        <div class="menu">
+            <button id="createBtn">✨ Create New Game</button>
+            <div class="join-section">
+                <input type="text" id="gameIdInput" placeholder="Enter Game ID">
+                <button id="joinBtn">🔗 Join Game</button>
+            </div>
+        </div>
+        <div id="message"></div>
+    </div>
+    <script>
+        document.getElementById('createBtn').onclick = async () => {
+            const res = await fetch('/create', {method: 'POST'});
+            const data = await res.json();
+            if (data.game_id) {
+                window.location.href = `/game/${data.game_id}`;
+            }
+        };
+        document.getElementById('joinBtn').onclick = async () => {
+            const gameId = document.getElementById('gameIdInput').value.trim();
+            if (!gameId) return;
+            const res = await fetch('/join', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({game_id: gameId})
+            });
+            if (res.ok) {
+                const data = await res.json();
+                window.location.href = `/game/${data.game_id}`;
+            } else {
+                const err = await res.json();
+                document.getElementById('message').innerText = err.error || 'Failed to join';
+            }
+        };
+    </script>
+</body>
+</html>
