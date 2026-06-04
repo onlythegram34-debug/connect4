@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Connect 4 - Game {{ game_id }}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h2>Connect 4</h2>
+        <div class="game-info">
+            Game ID: <strong>{{ game_id }}</strong><br>
+            <span id="turnStatus">Loading...</span>
+        </div>
+        <canvas id="boardCanvas" width="700" height="600"></canvas>
+        <div class="controls">
+            <button id="copyLinkBtn">📋 Copy invite link</button>
+            <a href="/">🏠 New game</a>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+    <script>
+        // Pass game_id from Flask to JS
+        window.GAME_ID = "{{ game_id }}";
+    </script>
+</body>
+</html>
